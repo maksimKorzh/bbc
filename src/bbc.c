@@ -26,6 +26,7 @@
 #endif
 
 // FEN dedug positions
+#define empty_board "8/8/8/8/8/8/8/8 w - - "
 #define start_position "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1 "
 #define tricky_position "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1 "
 #define killer_position "rnbqkb1r/pp1p1pPp/8/2p1pP2/1P1P4/3P3P/P1P1P3/RNBQKBNR w KQkq e6 0 1"
@@ -305,6 +306,15 @@ const int mirror_score[128] =
 #define set_bit(bitboard, square) (bitboard |= (1ULL << square))
 #define pop_bit(bitboard, square) (get_bit(bitboard, square) ? (bitboard ^= (1ULL << square)) : 0)
 
+
+/**********************************\
+ ==================================
+ 
+            Chess board
+ 
+ ==================================
+\**********************************/
+
 // bitboards for all pieces (empty square & 12 pieces)
 U64 bitboards[13];
 
@@ -351,7 +361,11 @@ void print_bitboard(U64 bitboard)
         printf("\n");
     }
     
+    // print files
     printf("\n     a b c d e f g h\n\n");
+    
+    // print bitboard as decimal
+    printf("     bitboard: %llud\n\n", bitboard);
 }
 
 // print chess board
@@ -530,10 +544,168 @@ void parse_fen(char *fen)
         enpassant = no_sq;   
 }
 
+
+/**********************************\
+ ==================================
+ 
+              Attacks
+ 
+ ==================================
+\**********************************/
+
+/* 
+     not A file          not H file         not HG files      not AB files
+      bitboard            bitboard            bitboard          bitboard
+
+ 8  0 1 1 1 1 1 1 1    1 1 1 1 1 1 1 0    1 1 1 1 1 1 0 0    0 0 1 1 1 1 1 1
+ 7  0 1 1 1 1 1 1 1    1 1 1 1 1 1 1 0    1 1 1 1 1 1 0 0    0 0 1 1 1 1 1 1
+ 6  0 1 1 1 1 1 1 1    1 1 1 1 1 1 1 0    1 1 1 1 1 1 0 0    0 0 1 1 1 1 1 1
+ 5  0 1 1 1 1 1 1 1    1 1 1 1 1 1 1 0    1 1 1 1 1 1 0 0    0 0 1 1 1 1 1 1
+ 4  0 1 1 1 1 1 1 1    1 1 1 1 1 1 1 0    1 1 1 1 1 1 0 0    0 0 1 1 1 1 1 1
+ 3  0 1 1 1 1 1 1 1    1 1 1 1 1 1 1 0    1 1 1 1 1 1 0 0    0 0 1 1 1 1 1 1
+ 2  0 1 1 1 1 1 1 1    1 1 1 1 1 1 1 0    1 1 1 1 1 1 0 0    0 0 1 1 1 1 1 1
+ 1  0 1 1 1 1 1 1 1    1 1 1 1 1 1 1 0    1 1 1 1 1 1 0 0    0 0 1 1 1 1 1 1
+    
+    a b c d e f g h    a b c d e f g h    a b c d e f g h    a b c d e f g h
+
+*/
+
+// A file mask
+U64 not_a_file = 18374403900871474942ULL;
+
+// H file mask
+U64 not_h_file = 9187201950435737471ULL;
+
+// HG files mask
+U64 not_hg_file = 4557430888798830399ULL;
+
+// AB files mask
+U64 not_ab_file = 18229723555195321596ULL;
+
+// pre-calculated pawn attacks [side][square]
+U64 pawn_attacks[2][64];
+
+// pre-calculated knight attacks [square]
+U64 knight_attacks[64];
+
+// pre-calculated king attacks [square]
+U64 king_attacks[64];
+
+// mask pawn attacks
+U64 mask_pawn_attacks(int side, int square)
+{
+    // init piece bitboard
+    U64 bitboard = 0ULL;
+    
+    // init attack bitboard
+    U64 attacks = 0ULL;
+    
+    // set bit on piece bitboard at current square
+    set_bit(bitboard, square);
+    
+    // white to move
+    if (!side)
+    {
+        // generate attacks
+        if ((bitboard >> 7) & not_a_file) attacks |= (bitboard >> 7);
+        if ((bitboard >> 9 ) & not_h_file) attacks |= (bitboard >> 9);
+    }
+    
+    // black to move
+    else
+    {
+        // generate attacks
+        if ((bitboard << 7) & not_h_file) attacks |= (bitboard << 7);
+        if ((bitboard << 9 ) & not_a_file) attacks |= (bitboard << 9);
+    }
+    
+    // return attack mask
+    return attacks;
+}
+
+// mask knight attacks
+U64 mask_knight_attacks(int square)
+{
+    // init piece bitboard
+    U64 bitboard = 0ULL;
+    
+    // init attack bitboard
+    U64 attacks = 0ULL;
+    
+    // set bit on piece bitboard at current square
+    set_bit(bitboard, square);
+
+    // generate attacks
+    if ((bitboard >> 15) & not_a_file) attacks |= (bitboard >> 15);
+    if ((bitboard >> 17) & not_h_file) attacks |= (bitboard >> 17);
+    if ((bitboard >> 10) & not_hg_file) attacks |= (bitboard >> 10);
+    if ((bitboard >> 6) & not_ab_file) attacks |= (bitboard >> 6);
+    if ((bitboard << 15) & not_h_file) attacks |= (bitboard << 15);
+    if ((bitboard << 17) & not_a_file) attacks |= (bitboard << 17);
+    if ((bitboard << 10) & not_ab_file) attacks |= (bitboard << 10);
+    if ((bitboard << 6) & not_hg_file) attacks |= (bitboard << 6);
+    
+    // return attack mask
+    return attacks;
+}
+
+// mask king attacks
+U64 mask_king_attacks(int square)
+{
+    // init piece bitboard
+    U64 bitboard = 0ULL;
+    
+    // init attack bitboard
+    U64 attacks = 0ULL;
+    
+    // set bit on piece bitboard at current square
+    set_bit(bitboard, square);
+    
+    // generate attacks
+    if (bitboard >> 8) attacks |= (bitboard >> 8);
+    if ((bitboard >> 7) & not_a_file) attacks |= (bitboard >> 7);
+    if ((bitboard >> 9) & not_h_file) attacks |= (bitboard >> 9);
+    if ((bitboard >> 1) & not_h_file) attacks |= (bitboard >> 1);
+    if (bitboard << 8) attacks |= (bitboard << 8);
+    if ((bitboard << 7) & not_h_file) attacks |= (bitboard << 7);
+    if ((bitboard << 9) & not_a_file) attacks |= (bitboard << 9);
+    if ((bitboard << 1) & not_a_file) attacks |= (bitboard << 1);
+
+    // return attack mask
+    return attacks;
+}
+
+// init leaper pieces' attacks
+void init_leapers_attacks()
+{
+    // loop over bitboard indices
+    for (int square = 0; square < 64; square++)
+    {
+        // init pawn attacks
+        pawn_attacks[white][square] = mask_pawn_attacks(white, square);
+        pawn_attacks[black][square] = mask_pawn_attacks(black, square);
+        knight_attacks[square] = mask_knight_attacks(square);
+        king_attacks[square] = mask_king_attacks(square);
+    }
+}
+
 int main()
 {
-    parse_fen(tricky_position);
-    print_board();
-     
+    // init attack tables
+    init_leapers_attacks();
+    
+        
+    for (int i = 0; i < 64; i++)
+        print_bitboard(king_attacks[i]);
+    
     return 0;
 }
+
+
+
+
+
+
+
+
+

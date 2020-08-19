@@ -334,7 +334,7 @@ int king_square[2];
  ==================================
 \**********************************/
 
-// set/get/pop bits
+// bits manipulations
 #define get_bit(bitboard, square) (bitboard & (1ULL << square))
 #define set_bit(bitboard, square) (bitboard |= (1ULL << square))
 #define pop_bit(bitboard, square) (get_bit(bitboard, square) ? (bitboard ^= (1ULL << square)) : 0)

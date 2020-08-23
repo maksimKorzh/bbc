@@ -349,7 +349,7 @@ int count_bits(U64 bitboard) {
   {
       // increment count
       count++;
-      
+
       // consecutively reset least significant 1st bit
       bitboard &= bitboard - 1;
   }

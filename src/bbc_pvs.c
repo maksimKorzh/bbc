@@ -2624,9 +2624,6 @@ int quiescence(int alpha, int beta)
     return alpha;
 }
 
-const int full_depth_moves = 4;
-const int reduction_limit = 3;
-
 // negamax serach with alpha-beta pruning
 int negamax(int alpha, int beta, int depth)
 {    
@@ -2658,23 +2655,6 @@ int negamax(int alpha, int beta, int depth)
     // init best move so far
     int bestmove_sofar = 0;
     
-    // null move pruning
-    
-    if (depth >= 3 && !in_check)
-    {
-        // make null
-        copy_board();
-        side ^= 1;
-        
-        int score = -negamax(-beta, -beta + 1, depth - 1 - 2);
-        
-        //take back null
-        take_back();
-        
-        if (score >= beta)
-            return beta;
-    }
-    
     // create move list
     moves move_list[1];
     
@@ -2686,11 +2666,9 @@ int negamax(int alpha, int beta, int depth)
     
     // move ordering
     sort_moves(move_list);
-
+    
     // debug move ordering
     //print_move_scores(move_list);
-    
-    int moves_searched = 0;
 
     // loop over move list
     for (int count = 0; count < move_list->count; count++)
@@ -2716,7 +2694,7 @@ int negamax(int alpha, int beta, int depth)
         
         //
         int score;
-
+        
         // PV search
         if (found_pv)
         {
@@ -2734,45 +2712,15 @@ int negamax(int alpha, int beta, int depth)
                "bad move proof" search referred to earlier.
             */
             if ((score > alpha) && (score < beta)) // Check for failure.
-            {
                 // re-search with normal conditions
                 score = -negamax(-beta, -alpha, depth - 1);
-            }
         }
         
         else
         {
-            // First move, use full-window search
-            if(moves_searched == 0) 
-            {                        
-                // recursive negamax call
-                score = -negamax(-beta, -alpha, depth - 1);
-            }   
-            // LMR
-            else {   
-                if (moves_searched >= full_depth_moves &&
-                    depth >= reduction_limit &&
-                    in_check == 0 &&
-                    get_move_capture(move_list->moves[count]) == 0 &&
-                    get_move_promoted(move_list->moves[count]) == 0
-                   )
-                {
-                    // Search this move with reduced depth:
-                    score = -negamax(- alpha - 1, -alpha, depth-2);
-                }
-                
-                else score = alpha + 1;  // Hack to ensure that full-depth search is done
-        
-
-                if(score > alpha)
-                {
-                    score = -negamax(-alpha - 1, -alpha, depth-1);
-                    
-                    // research on fail    
-                    if((score > alpha) && (score < beta))
-                        score = -negamax(-beta, -alpha, depth-1);
-                }      
-            }
+            // recursive negamax call
+            score = -negamax(-beta, -alpha, depth - 1);
+            
         }
         
         
@@ -2781,8 +2729,6 @@ int negamax(int alpha, int beta, int depth)
         
         // take move back
         take_back();
-        
-        moves_searched++;
         
         // fail hard beta cutoff
         if (score >= beta)
@@ -3060,8 +3006,6 @@ void parse_go(char *command)
         // init depth
         depth = atoi(argument + 6);
     
-    else depth = 9;
-    
     // search position
     search_position(depth);
 }
@@ -3177,10 +3121,10 @@ int main()
     if (debug)
     {
         // debug
-        parse_fen(tricky_position);
+        parse_fen(cmk_position);
         print_board();
         
-        search_position(6);
+        search_position(5);
     }
     
     else

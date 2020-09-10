@@ -2436,90 +2436,6 @@ int best_move = 0;
 // half move counter
 int ply = 0;
 
-////////////////// TT ////////////////////
-
-// generate position key
-static inline U64 identify_position()
-{
-    // position key
-    U64 position_id = 0ULL;
-    
-    // hash bitboards
-    for (int bb_piece = P; bb_piece <= k; bb_piece++)
-        position_id ^= bitboards[bb_piece];
-    
-    // hash occupancies
-    position_id ^= occupancies[white];
-    position_id ^= occupancies[black];
-    position_id ^= occupancies[both];
-    
-    // hash side
-    position_id ^= side;
-    
-    // hash enpassant
-    position_id ^= enpassant;
-    
-    // hash castling
-    position_id ^= castle;
-    
-    return position_id;
-}
-
-
-
-#define    hashfEXACT   0
-#define    hashfALPHA   1
-#define    hashfBETA    2
-
-typedef struct tagHASHE {
-    U64 key;
-    int depth;
-    int flags;
-    int value;
-    int best_move;
-}   HASHE;
-
-HASHE hash_table[4096];
-
-int probe_hash(int depth, int alpha, int beta)
-{
-    HASHE * phashe = &hash_table[identify_position() % 4096];
-
-    if (phashe->key == identify_position()) {
-        if (phashe->depth >= depth) {
-            if (phashe->flags == hashfEXACT)
-                return phashe->value;
-
-            if ((phashe->flags == hashfALPHA) &&
-                (phashe->value <= alpha))
-                return alpha;
-                
-            if ((phashe->flags == hashfBETA) &&
-                (phashe->value >= beta))
-                return beta;
-        }
-        //RememberBestMove();
-    }
-
-    return 0;
-}
-
-void record_hash(int depth, int val, int hashf, int move)
-
-{
-    HASHE * phashe = &hash_table[identify_position() % 4096];
- 
-    phashe->key = identify_position();
-    phashe->best_move = move;
-    phashe->value = val;
-    phashe->flags = hashf;
-    phashe->depth = depth;
-}
-
-
-
-
-
 // score move for move ordering
 static inline int score_move(int move)
 {    
@@ -2939,26 +2855,12 @@ void search_position(int depth)
     // init score
     int score = 0;
     
-    // init alpha beta
-    int alpha = -50000;
-    int beta = 50000;
-    
     // iterative deepening
     for (int current_depth = 1; current_depth <= depth; current_depth++)
     {
         // run negamax alpha beta search on a given depth
-        score = negamax(alpha, beta, current_depth);
-
-        if ((score <= alpha) || (score >= beta)) {
-            alpha = -50000;    // We fell outside the window, so try again with a
-            beta = 50000;      //  full-width window (and the same depth).
-            continue;
-        }
+        score = negamax(-50000, 50000, current_depth);
         
-        // aspiration window decrease
-        alpha = score - 50;  // Set up the window for the next iteration.
-        beta = score + 50;
-
         // print output info details
         printf("info score cp %d depth %d nodes %ld pv ", score, current_depth, nodes);
         
@@ -3279,14 +3181,7 @@ int main()
         parse_fen(tricky_position);
         print_board();
         
-        //search_position(6);
-        record_hash(6, 10, hashfEXACT, encode_move(e2, a6, B, 0, 1, 0, 0, 0));
-        record_hash(6, 50000, hashfEXACT, encode_move(e2, a6, B, 0, 1, 0, 0, 0));
-
-        int score;
-        if ((score = probe_hash(6, -50000, 50000)) != 0)
-            printf("found!\n");
-        
+        search_position(6);
     }
     
     else

@@ -2720,6 +2720,7 @@ int negamax(int alpha, int beta, int depth)
             // store PV move
 			pv_table[ply][ply] = move_list->moves[count];
 			
+			// loop over next ply
 			for (int i = ply + 1; i < pv_length[ply + 1]; i++)
 				pv_table[ply][i] = pv_table[ply + 1][i];
 	
@@ -2813,6 +2814,16 @@ void search_position(int depth)
     printf("bestmove ");
     print_move(best_move);
     printf("\n");
+    
+    for (int i = 0; i < 64; i++)
+        {
+            for (int y = 0; y < 64; y++)
+            {
+                printf("%d", pv_table[i][y] ? 1 : 0);
+            }
+            
+            printf("\n");
+        }
 }
 
 /**********************************\
@@ -3086,7 +3097,7 @@ int main()
     if (debug)
     {
         // debug
-        parse_fen(cmk_position);
+        parse_fen(tricky_position);
         print_board();
         
         search_position(5);

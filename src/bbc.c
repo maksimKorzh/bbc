@@ -120,6 +120,100 @@ char promoted_pieces[] = {
 };
 
 
+#include <setjmp.h>
+#include "unistd.h"
+jmp_buf buf;
+
+int movestogo = 30,movetime = -1;
+int time = -1, inc = 0;
+int starttime = 0, stoptime = 0;
+int timeset = 0;
+int stopped = 0;
+
+// get time in milliseconds
+int get_time_ms()
+{
+    #ifdef WIN64
+        return GetTickCount();
+    #else
+        struct timeval time_value;
+        gettimeofday(&time_value, NULL);
+        return time_value.tv_sec * 1000 + time_value.tv_usec / 1000;
+    #endif
+}
+
+
+int quit = 0;
+int InputWaiting()
+{
+#ifndef WIN32
+  fd_set readfds;
+  struct timeval tv;
+  FD_ZERO (&readfds);
+  FD_SET (fileno(stdin), &readfds);
+  tv.tv_sec=0; tv.tv_usec=0;
+  select(16, &readfds, 0, 0, &tv);
+
+  return (FD_ISSET(fileno(stdin), &readfds));
+#else
+   static int init = 0, pipe;
+   static HANDLE inh;
+   DWORD dw;
+
+   if (!init) {
+     init = 1;
+     inh = GetStdHandle(STD_INPUT_HANDLE);
+     pipe = !GetConsoleMode(inh, &dw);
+     if (!pipe) {
+        SetConsoleMode(inh, dw & ~(ENABLE_MOUSE_INPUT|ENABLE_WINDOW_INPUT));
+        FlushConsoleInputBuffer(inh);
+      }
+    }
+    if (pipe) {
+      if (!PeekNamedPipe(inh, NULL, 0, NULL, &dw, NULL)) return 1;
+      return dw;
+    } else {
+      GetNumberOfConsoleInputEvents(inh, &dw);
+      return dw <= 1 ? 0 : dw;
+	}
+#endif
+}
+
+void ReadInput() {
+  int             bytes;
+  char            input[256] = "", *endc;
+
+    if (InputWaiting()) {
+		stopped = 1;
+		do {
+		  bytes=read(fileno(stdin),input,256);
+		} while (bytes<0);
+		endc = strchr(input,'\n');
+		if (endc) *endc=0;
+
+		if (strlen(input) > 0) {
+			if (!strncmp(input, "quit", 4))    {
+			  quit = 1;
+			}
+			
+			else if (!strncmp(input, "stop", 4))    {
+			  quit = 1;
+			}
+		}
+		return;
+    }
+}
+
+static void CheckUp() {
+	// if time is up break here
+    if(timeset == 1 && get_time_ms() > stoptime) {
+		stopped = 1;
+	}
+	
+    // break on GUI interrupt
+	ReadInput();
+}
+
 /**********************************\
  ==================================
  
@@ -2103,17 +2197,6 @@ static inline void generate_moves(moves *move_list)
  ==================================
 \**********************************/
 
-// get time in milliseconds
-int get_time_ms()
-{
-    #ifdef WIN64
-        return GetTickCount();
-    #else
-        struct timeval time_value;
-        gettimeofday(&time_value, NULL);
-        return time_value.tv_sec * 1000 + time_value.tv_usec / 1000;
-    #endif
-}
 
 // leaf nodes (number of positions reached during the test of the move generator at a given depth)
 long nodes;
@@ -2436,6 +2519,9 @@ int best_move = 0;
 // half move counter
 int ply = 0;
 
+
+
+
 ////////////////// TT ////////////////////
 
 // generate position key
@@ -2628,9 +2714,15 @@ void print_move_scores(moves *move_list)
     }
 }
 
+
+
 // quiescence search
 int quiescence(int alpha, int beta)
 {
+    if((nodes & 2047 ) == 0) {
+		CheckUp();
+	}
+
     // PV length
     pv_length[ply] = ply;
     
@@ -2685,6 +2777,10 @@ int quiescence(int alpha, int beta)
         // take move back
         take_back();
         
+        if(stopped == 1) {
+			return 0;
+		}
+        
         // fail hard beta cutoff
         if (score >= beta)
             return beta;
@@ -2703,6 +2799,8 @@ int quiescence(int alpha, int beta)
 	
 			pv_length[ply] = pv_length[ply + 1];
         }
+        
+        
     }
     
     return alpha;
@@ -2714,6 +2812,14 @@ const int reduction_limit = 3;
 // negamax serach with alpha-beta pruning
 int negamax(int alpha, int beta, int depth)
 {    
+    // PV length
+    pv_length[ply] = ply;
+    
+    
+    if((nodes & 2047 ) == 0) {
+		CheckUp();
+	}
+	
     // PV node flag
     int found_pv = 0;
     
@@ -2721,9 +2827,6 @@ int negamax(int alpha, int beta, int depth)
     if (depth == 0)
         // evaluate position
         return quiescence(alpha, beta);
-    
-    // PV length
-    pv_length[ply] = ply;
     
     // increment nodes
     nodes++;
@@ -2755,6 +2858,9 @@ int negamax(int alpha, int beta, int depth)
 
         //take back null
         take_back();
+        
+        if (stopped == 1)
+            return 0;
             
         if (score >= beta)
             return beta;
@@ -2869,6 +2975,10 @@ int negamax(int alpha, int beta, int depth)
         
         moves_searched++;
         
+        if(stopped == 1) {
+			return 0;
+		}
+        
         // fail hard beta cutoff
         if (score >= beta)
         {
@@ -2910,6 +3020,9 @@ int negamax(int alpha, int beta, int depth)
     if (old_alpha != alpha)
         best_move = bestmove_sofar;
     
+    if (quit)
+        return 0;
+    
     // if no legal moves available in the position
     if (!legal_moves)
     {
@@ -2925,11 +3038,16 @@ int negamax(int alpha, int beta, int depth)
     return alpha;
 }
 
+
 // search position
 void search_position(int depth)
 {
     // init nodes count
     nodes = 0;
+    
+    int best_move = 0;
+    
+    stopped = 0;
     
     // clear PV, killer and history moves
     memset(pv_table, 0, sizeof(pv_table));
@@ -2946,6 +3064,13 @@ void search_position(int depth)
     // iterative deepening
     for (int current_depth = 1; current_depth <= depth; current_depth++)
     {
+        if(stopped == 1) {
+			break;
+		}
+		
+		best_move = pv_table[0][0];
+		
+        //if (quit) longjmp(buf, 1);
         // run negamax alpha beta search on a given depth
         score = negamax(alpha, beta, current_depth);
 
@@ -2971,6 +3096,7 @@ void search_position(int depth)
         
         // end info
         printf("\n");
+       
     }
     
     /* run negamax alpha beta search on a given depth
@@ -2997,10 +3123,12 @@ void search_position(int depth)
     // 1021383 negamax + quiescence PV order init pv_lenght before depth == 0
     // 309726 ID + negamax + quiescence PV order init pv_lenght after depth == 0
     
+
+
     // engine output
     printf("bestmove ");
-    print_move(best_move);
-    printf("\n");
+    print_move(pv_table[0][0]);
+    printf("\n");     
 }
 
 /**********************************\
@@ -3155,15 +3283,66 @@ void parse_go(char *command)
     char *argument = NULL;
     
     // fixed depth search
-    if (argument = strstr(command, "depth"))
-        // init depth
-        depth = atoi(argument + 6);
     
-    else depth = 9;
+	if ((argument = strstr(command,"infinite"))) {
+		;
+	}
+
+	if ((argument = strstr(command,"binc")) && side == black) {
+		inc = atoi(argument + 5);
+	}
+
+	if ((argument = strstr(command,"winc")) && side == white) {
+		inc = atoi(argument + 5);
+	}
+
+	if ((argument = strstr(command,"wtime")) && side == white) {
+		time = atoi(argument + 6);
+	}
+
+	if ((argument = strstr(command,"btime")) && side == black) {
+		time = atoi(argument + 6);
+	}
+
+	if ((argument = strstr(command,"movestogo"))) {
+		movestogo = atoi(argument + 10);
+	}
+
+	if ((argument = strstr(command,"movetime"))) {
+		movetime = atoi(argument + 9);
+	}
+
+	if ((argument = strstr(command,"depth"))) {
+		depth = atoi(argument + 6);
+	}
+
+	if(movetime != -1) {
+		time = movetime;
+		movestogo = 1;
+	}
+
+	starttime = get_time_ms();
+	depth = depth;
+
+	if(time != -1) {
+		timeset = 1;
+		time /= movestogo;
+		time -= 50;
+		stoptime = starttime + time + inc;
+	}
+
+	if(depth == -1) {
+		depth = 64;
+	}
+
+    printf("time:%d start:%d stop:%d depth:%d timeset:%d\n",
+		time, starttime, stoptime, depth, timeset);
     
     // search position
     search_position(depth);
 }
+
+
 
 // UCI loop
 void uci_loop()
@@ -3182,6 +3361,9 @@ void uci_loop()
 	
     // main loop
 	while (1) {
+	    setjmp(buf);
+        quit = 0;
+            
 		// reset GUI input
 		memset(input, 0, sizeof(input));
 		
@@ -3221,6 +3403,7 @@ void uci_loop()
         // parse UCI command "quit"
         else if (!strncmp(input, "quit", 4))
         {
+            quit = 1;
             break;
         }
         
@@ -3266,12 +3449,15 @@ void init_all()
  ==================================
 \**********************************/
 
+
+
+
 int main()
 {
     // init all
     init_all();
     
-    int debug = 1;
+    int debug = 0;
     
     if (debug)
     {
@@ -3279,13 +3465,7 @@ int main()
         parse_fen(tricky_position);
         print_board();
         
-        //search_position(6);
-        record_hash(6, 10, hashfEXACT, encode_move(e2, a6, B, 0, 1, 0, 0, 0));
-        record_hash(6, 50000, hashfEXACT, encode_move(e2, a6, B, 0, 1, 0, 0, 0));
-
-        int score;
-        if ((score = probe_hash(6, -50000, 50000)) != 0)
-            printf("found!\n");
+        search_position(5);
         
     }
     

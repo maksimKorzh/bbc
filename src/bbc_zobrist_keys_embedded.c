@@ -3067,101 +3067,13 @@ static inline int quiescence(int alpha, int beta)
     return alpha;
 }
 
-
-/* ============= TT =============== */
-
-// TT data structure
-#define hash_flag_exact   0
-#define hash_flag_alpha   1
-#define hash_flag_beta    2
-#define hash_size 4000000
-
-// define tt
-typedef struct {
-    U64 key;
-    int depth;
-    int flag;
-    int value;
-    int best_move;
-} tt;
-
-
-
-// tt instance
-tt hash_table[hash_size]; 
-
-// init hash table
-void init_hash_table()
-{
-    for (int index = 0; index < hash_size; index++)
-    {
-        hash_table[index].key = 0;
-        hash_table[index].depth = 0;
-        hash_table[index].flag = 0;
-        hash_table[index].value = 0;
-        hash_table[index].best_move = 0;
-    }
-}
-
-// probe hash
-int probe_hash_entry(int alpha, int beta, int depth)
-{
-    // calculate hash index
-    tt *hash_entry = &hash_table[hash_key % hash_size];
-
-    // if found hash entry by hash key
-    if (hash_entry->key == hash_key) {
-        // if hash entry depth >= current depth
-        if (hash_entry->depth >= depth)
-        {
-            // on exact score match
-            if (hash_entry->flag == hash_flag_exact)
-                return hash_entry->value;
-                
-            // on alpha score match
-            if ((hash_entry->flag == hash_flag_alpha) &&
-                (hash_entry->value <= alpha))
-                return alpha;
-            
-            // on beta score match
-            if ((hash_entry->flag == hash_flag_beta) &&
-            (hash_entry->value >= beta))
-                return beta;
-        }
-    }
-    
-    // return unknown value out of ab window
-    return 100000;
-}
-
-//store hash
-void store_hash_entry(int score, int depth, int hash_flag)
-{
-    // calculate hash entry index pointer
-    tt *hash_entry = &hash_table[hash_key % hash_size];
- 
-    // write hash data
-    hash_entry->key = hash_key;
-    hash_entry->value = score;
-    hash_entry->flag = hash_flag;
-    hash_entry->depth = depth;
-}
-
 const int full_depth_moves = 4;
 const int reduction_limit = 3;
+
 
 // negamax alpha beta search
 static inline int negamax(int alpha, int beta, int depth)
 {
-    int score;
-    
-    //---------------//
-    int hash_flag = hash_flag_alpha;
-    
-    //-----------------------//
-    if ((score = probe_hash_entry(alpha, beta, depth)) != 100000)
-        return score;
-    
     // every 2047 nodes
     if((nodes & 2047 ) == 0)
         // "listen" to the GUI/user input
@@ -3172,15 +3084,8 @@ static inline int negamax(int alpha, int beta, int depth)
 
     // recursion escapre condition
     if (depth == 0)
-    {
-        score = quiescence(alpha, beta);
-        
-        //--------------------//
-        //store_hash_entry(score, depth, hash_flag_exact);
-        
         // run quiescence search
-        return score;
-    }
+        return quiescence(alpha, beta);
     
     // we are too deep, hence there's an overflow of arrays relying on max ply constant
     if (ply > max_ply - 1)
@@ -3228,7 +3133,7 @@ static inline int negamax(int alpha, int beta, int depth)
         
         /* search moves with reduced depth to find beta cutoffs
            depth - 1 - R where R is a reduction limit */
-        score = -negamax(-beta, -beta + 1, depth - 1 - 2);
+        int score = -negamax(-beta, -beta + 1, depth - 1 - 2);
         
         // restore board state
         take_back();
@@ -3283,7 +3188,7 @@ static inline int negamax(int alpha, int beta, int depth)
         legal_moves++;
         
         // variable to store current move's score (from the static evaluation perspective)
-        //int score;
+        int score;
         
         // full depth search
         if (moves_searched == 0)
@@ -3343,9 +3248,6 @@ static inline int negamax(int alpha, int beta, int depth)
         // fail-hard beta cutoff
         if (score >= beta)
         {
-            //----------------------//
-            store_hash_entry(beta, depth, hash_flag_beta);
-            
             // on quiet moves
             if (get_move_capture(move_list->moves[count]) == 0)
             {
@@ -3361,9 +3263,6 @@ static inline int negamax(int alpha, int beta, int depth)
         // found a better move
         if (score > alpha)
         {
-            //---------------//
-            hash_flag = hash_flag_exact;
-        
             // on quiet moves
             if (get_move_capture(move_list->moves[count]) == 0)
                 // store history moves
@@ -3399,9 +3298,6 @@ static inline int negamax(int alpha, int beta, int depth)
             return 0;
     }
     
-    //----------------------//
-    store_hash_entry(alpha, depth, hash_flag);
-    
     // node (move) fails low
     return alpha;
 }
@@ -3431,9 +3327,6 @@ void search_position(int depth)
     // define initial alpha beta bounds
     int alpha = -50000;
     int beta = 50000;
-    
-    //---------//
-    init_hash_table();
  
     // iterative deepening
     for (int current_depth = 1; current_depth <= depth; current_depth++)
@@ -3824,9 +3717,6 @@ void init_all()
     
     // init hash keys (with random numbers)
     init_hash_keys();
-    
-    //
-    init_hash_table();
 }
 
 
@@ -3850,21 +3740,11 @@ int main()
     if (debug)
     {
         // parse fen
-        parse_fen("5k2/8/5K2/8/6Q1/8/8/8 w - - 1 1 ");
+        parse_fen("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1 ");
         print_board();
-        
-        int st = get_time_ms();
         search_position(7);
-        printf("\n\nspent %d ms\n", get_time_ms() - st);
-        //printf("tt hits %d\n", alpha_hits, beta_hits, exact_hits);
         
-        /*int score = 0;
-        
-        store_hash_entry(25, encode_move(e2, a6, B, 0, 1, 0, 0, 0), 4, hash_flag_exact);
-        probe_hash_entry(&score, 22, 28, 4);
-        
-        printf("score: %d\n", score);
-        */
+        //perft_test(4);
         
     }
     

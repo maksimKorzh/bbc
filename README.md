@@ -43,6 +43,7 @@ I really hope that someone from CCRL would take it to rate.
   I would like to thank to:<br>
   <br>
    - HaraldLuessen & Pedro Castro Elgarresta for neverending hints and technical support
+   - Sven Schüle for explaining how mating scores works in TT (in great details!)
    - Jay Warendorff for testing development versions of BBC<br>
   <br>
   And all the subscribers watching my videos and<br>

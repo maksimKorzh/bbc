@@ -1,0 +1,122 @@
+Mate scoring in transposition table
+CCC post by Sven Schüle (answer to CMK's question on TT)
+==============================================================
+
+The origin of detecting a mate score for the first time
+is when the moving side S is mated in the current position P (mate is on the board).
+If we are at ply N, i.e. the current position is N plies away from the root, then the typical
+implementation (to which you refer here) is to return -(MATED_VALUE - N) at that point.
+The parent node, due to negamax, sees this as (MATED_VALUE - N) from the viewpoint of O,
+the opponent of S.
+Either the negative or the positive version of that score (depending on whose turn it is)
+is propagated to any node on the path from the root to P unless a better move is found
+that results in a shorter mate (for O) or a longer one (for S), or the mate can even be avoided for S.
+
+Now suppose you are done with a node Q and store a score in TT, and it happens to be a mate score.
+You are at ply K (K < N) and the two cases are:
+
+a) N-K is even (so it is again S to move):
+   the score resulting from the search is still negative and of the form -(MATED_VALUE - N),
+   but it means that S is mated in (N-K) plies from the current node Q;
+   
+b) N-K is odd (so it is O to move):
+   the score resulting from the search is positive and of the form (MATED_VALUE - N),
+   and it means that O can mate in (N-K) plies from the current node Q.
+
+In both cases the score resulting from the search still reflects the distance of N plies
+between the root and P, the position where the mate actually happened.
+
+Now position Q might occur somewhere else in the tree, or even during the next search.
+You want to save time and read the mate score from TT.
+But the distance to root may be different from what it was when the score was stored.
+
+The essential information you want to store shall be independent from the actual path from root to Q,
+it shall only reflect the distance from the current node Q (where you store the score)
+to P (the terminal node of the forced mating variation).
+
+Therefore N must be replaced by (N - K) when storing,
+so you always store "mated in (N - K) plies from here" or "mate in (N - K) plies from here".
+
+You can figure out what "replacing N by (N - K)" means in the two cases above but nevertheless
+I'll also show the result of figuring it out ...
+
+a) When storing a negative score -(MATED_VALUE - N) it is transformed into -(MATED_VALUE - (N - K))
+   by subtracting K:
+       -(MATED_VALUE - N) - K = -(MATED_VALUE - N + K) = -(MATED_VALUE - (N - K))
+
+b) When storing a positive score (MATED_VALUE - N) it is transformed into (MATED_VALUE - (N - K))
+   by adding K:
+       (MATED_VALUE - N) + K = MATED_VALUE - (N - K)
+
+Now it should be obvious what you do when retrieving a mate score from TT.
+You do exactly the opposite: at a node Q2 that is (supposedly)
+identical to Q and has a distance of K2 to the root,
+a negative TT score is transformed into a tree score by adding K2,
+and a positive TT score by subtracting K2.
+In both cases you "replace (N - K2) by N".
+
+For the implementation it may be a good idea to have two small functions
+that return the transformation result, like in this example:
+
+int scoreToTT(int score, int ply)
+    return (score > MATE_SCORE) ? score + ply : (score < -MATE_SCORE) ? score - ply : score;
+    
+int scoreFromTT(int score, int ply)
+    return (score > MATE_SCORE) ? score - ply : (score < -MATE_SCORE) ? score + ply : score;
+
+You would use scoreToTT() for storing and scoreFromTT() for retrieving scores,
+and you would not have to bother with the details of mate score transformation
+anywhere else outside these two functions.
+
+Now to your practical example.
+You wrote you are at ply 5 and your search returns a "mate in 8" (plies).
+That cannot happen since 8 is even and you could only detect either a "mated in 8 plies" (case A) or,
+say, a "mate in 9 plies" (case B). You store the following:
+
+A) Distance from root to mate is 5+8 = 13 so search returns -(49000 - 13) = -48987.
+   You store a "mated in 8 plies" which is -48987 - 5 = -48992 = -(49000 - 8).
+
+B) Distance from root to mate is 5+9 = 14 so search returns (49000 - 14) = +48986.
+   You store a "mate in 9 plies" which is +48986 + 5 = +48991 = +(49000 - 9).
+
+Now let's say you encounter the same position through a different path at ply 3.
+The terminal node of the mating line is (3+8) and (3+9) plies away from the root,
+depending on the two cases A and B:
+
+A) TT returns -48992 which you transform into a tree score of -48992 + 3 = -48989 = -(49000 - 11).
+B) TT returns +48991 which you transform into a tree score of +48991 - 3 = +48988 = +(49000 - 12).
+
+Note also that mate scores occurring in the tree are within the following ranges
+(assuming your constants):
+
+a) negative mate scores (mated in even number of plies at any ply):
+-49000 = "mated at root" (this would usually not happen since you don't start a search when you are already mated)
+-48999 = "mated in 0 at ply 1"
+-48998 = "mated in 0 at ply 2" or "mated in 2 at root"
+-48997 = "mated in 0 at ply 3" or "mated in 2 at ply 1"
+...
+-48001 = "mated in 0 at ply 999" or "mated in 2 at ply 997" or ... or "mated in 998 at ply 1"
+
+b) positive mate scores (mate in odd number of plies at any ply):
++49000 can never happen
++48999 = "mate in 1 at root"
++48998 = "mate in 1 at ply 1"
++48997 = "mate in 1 at ply 2" or "mate in 3 at root"
+...
++48001 = "mate in 1 at ply 998" or "mate in 3 at ply 996" or ... or "mate in 999 at root"
+
+In contrast to that, mate scores stored in TT can only have the following values:
+
+a) negative mate scores (mated in even number of plies):
+-49000 = "mated" (some engines do not store "mated in 0" scores in TT, though)
+-48998 = "mated in 2"
+-48996 = "mated in 4"
+...
+-48002 = "mated in 998"
+
+b) positive mate scores (mate in odd number of plies):
++48999 = "mate in 1"
++48997 = "mate in 3"
++48995 = "mate in 5"
+...
++48001 = "mate in 999"

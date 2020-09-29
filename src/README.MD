@@ -1,7 +1,3 @@
-# Sources
- - "bbc.c" is a current development state version of BBC chess engine
- - "bbc_1.0_version.c" is a very first release of BBC
-
 # BBC 1.1
  - added dynamic hash memory allocation
  - added tapered evaluation

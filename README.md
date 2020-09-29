@@ -12,6 +12,9 @@ Here's latest match versus TSCP in BLITZ 2+1<br>
 BBC 1.0 - TSCP : 15,5/16 15-0-1 (11111111=1111111)  97%  +604<br>
 TSCP - BBC 1.0 : 0,5/16 0-15-1 (00000000=0000000)   3%  -604<br>
 <br>
+If your engine is stronger than 2500 ELO there's no much sense in playing matches<br>
+versus BBC for at the moment it would most likely lose all the games.<br>
+On the other hand testing versus engines of 2000 - 2300 ELO is welcomed!
 
 I really hope that someone from CCRL would take it to rate.
 

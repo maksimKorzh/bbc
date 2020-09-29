@@ -2,10 +2,11 @@
  - "bbc.c" is a current development state version of BBC chess engine
  - "bbc_1.0_version.c" is a very first release of BBC
 
-# BBC 1.1a
- - temporary removed all the eval by PST
+# BBC 1.1
+ - added dynamic hash memory allocation
  - added tapered evaluation
  - added PST from PeSTO engine by Ronald Friederich
+ - temporary removed all the eval by PST
  - empty PV bug fixed
  - timing bugs fixed
  - id author/name by fixed

@@ -26,11 +26,9 @@ https://github.com/maksimKorzh/bbc/tree/master/pgn
  - PVS (Principle Variation Search)
  - LMR (Late Move Reduction)
  - NMP (Null Move Pruning)
- - Transposition table (20MB fixed size)
+ - Transposition table (up to 128MB)
  - Material/PST (Positional Square Tables) evaluation
  - Tapered evaluation
- - Bishop & Queen mobility evaluation
- - Very basic king safety
  - UCI protocol
 
 # Credits

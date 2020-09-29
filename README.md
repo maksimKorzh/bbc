@@ -28,7 +28,7 @@ https://github.com/maksimKorzh/bbc/tree/master/pgn
  - NMP (Null Move Pruning)
  - Transposition table (20MB fixed size)
  - Material/PST (Positional Square Tables) evaluation
- - Double/isolated/passed pawns evaluation
+ - Tapered evaluation
  - Bishop & Queen mobility evaluation
  - Very basic king safety
  - UCI protocol

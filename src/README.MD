@@ -2,6 +2,14 @@
  - "bbc.c" is a current development state version of BBC chess engine
  - "bbc_1.0_version.c" is a very first release of BBC
 
+# BBC 1.1a
+ - temporary removed all the eval by PST
+ - added tapered evaluation
+ - added PST from PeSTO engine by Ronald Friederich
+ - empty PV bug fixed
+ - timing bugs fixed
+ - id author/name by fixed
+
 # BBC 1.0
 This is the very first release of BBC
 

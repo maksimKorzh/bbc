@@ -45,6 +45,8 @@ I really hope that someone from CCRL would take it to rate.
    - HaraldLuessen & Pedro Castro Elgarresta for neverending hints and technical support
    - Sven Schüle for explaining how mating scores works in TT (in great details!)
    - Jay Warendorff for testing development versions of BBC<br>
+   - Marcel Vanthoor for teaching me linear algebra and general inspirations
+   - Ronald Friederich for providing PeSTO evaluation tables and sharing his ideas
   <br>
   And all the subscribers watching my videos and<br>
   motivating me to keep the development!<br>

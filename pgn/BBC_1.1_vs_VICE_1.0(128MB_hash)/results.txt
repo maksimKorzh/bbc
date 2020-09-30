@@ -1,0 +1,5 @@
+Both used Arena book - use book up to half move 16
+Common Hash Table Size 128 MB
+2 minutes all moves + 1 second increment
+They each had white in 6 games
+BBC vs Vice 7.5 - 4.5

@@ -1,0 +1,26 @@
+D:\Cutechess-cli>cutechess-cli -debug -each tc=0:10+1.0 restart=on -engine conf=BBC-10 -engine conf=BBC-11 -games 12000 -wait 1000 -ratinginterval 10 -tb E:/syzygy;E:/syzygy-7 -tbpieces 7 -openings file=D:/Cutechess-cli/book_3moves_cp25-49_13580pos.pgn start=1 -repeat -concurrency 1 -pgnout book_3moves_cp25-49_13580pos.pgn-BBC-10_v_BBC-11.pgn min fi > log.txt
+Warning: Illegal PV move h8h7 from BBC-11 (1)
+Warning: PV: Kh7 Qxe6 Nf2+ Kg2 Nd3+ Kh3 h8h7
+Warning: Illegal PV move f3g2 from BBC-11 (1)
+Warning: PV: Nf2+ Kg2 Nd3+ Kh3 Ne5 Qxe5 Bxe5 Re7 Qd3 f3g2
+Warning: Illegal PV move e6g4 from BBC-10 (0)
+Warning: PV: Kg2 Ng4+ Kh3 Nf2+ e6g4
+Warning: Illegal PV move e6g4 from BBC-10 (0)
+Warning: PV: Kg2 Ng4+ Kh3 Nf2+ e6g4
+Warning: Illegal PV move e6f5 from BBC-11 (1)
+Warning: PV: Ng4+ Kh3 Nf2+ e6f5
+Warning: Illegal PV move e6f6 from BBC-10 (0)
+Warning: PV: Kh3 Nf2+ e6f6
+Warning: Illegal PV move e6g4 from BBC-10 (0)
+Warning: PV: Kh3 Nf2+ e6g4
+Warning: Illegal PV move h3g4 from BBC-10 (0)
+Warning: PV: Kh3 Nf2+ h3g4
+Warning: Illegal PV move e6g4 from BBC-11 (1)
+Warning: PV: Nf2+ e6g4
+Warning: Illegal PV move b2c3 from BBC-11 (1)
+Warning: PV: Nf2+ b2c3
+Warning: Illegal PV move e6g4 from BBC-11 (1)
+Warning: PV: Nf2+ e6g4
+Warning: Omitted incomplete game 1
+
+D:\Cutechess-cli>

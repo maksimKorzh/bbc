@@ -3851,6 +3851,9 @@ const int reduction_limit = 3;
 // negamax alpha beta search
 static inline int negamax(int alpha, int beta, int depth)
 {
+    // init PV length
+    pv_length[ply] = ply;
+    
     // variable to store current move's score (from the static evaluation perspective)
     int score;
     
@@ -3876,9 +3879,6 @@ static inline int negamax(int alpha, int beta, int depth)
     if((nodes & 2047 ) == 0)
         // "listen" to the GUI/user input
 		communicate();
-
-    // init PV length
-    pv_length[ply] = ply;
 
     // recursion escapre condition
     if (depth == 0)

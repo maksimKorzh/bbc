@@ -93,7 +93,7 @@
 #endif
 
 // define version
-#define version "1.1"
+#define version "1.2"
 
 // define bitboard data type
 #define U64 unsigned long long

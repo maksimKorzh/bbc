@@ -32,6 +32,7 @@ https://github.com/maksimKorzh/bbc/tree/master/pgn
  - NMP (Null Move Pruning)
  - Transposition table (up to 128MB)
  - Material/PST (Positional Square Tables) evaluation
+ - basic pawn structure/mobility/king safety evaluation
  - Tapered evaluation
  - UCI protocol
 
@@ -48,6 +49,7 @@ https://github.com/maksimKorzh/bbc/tree/master/pgn
    - Jay Warendorff for testing development versions of BBC<br>
    - Marcel Vanthoor for teaching me linear algebra and general inspirations
    - Ronald Friederich for providing PeSTO evaluation tables and sharing his ideas
+   - Gabor Szots from CCRL for testing & rating BBC
   <br>
   And all the subscribers watching my videos and<br>
   motivating me to keep the development!<br>

@@ -1,3 +1,8 @@
+# BBC 1.2
+ - forfeit on time with 1sec increment bug fix
+ - restored and improved commented evaluation features
+ - slightly stronger than version 1.1
+
 # BBC 1.1
  - added dynamic hash memory allocation
  - added tapered evaluation

@@ -4509,7 +4509,7 @@ void parse_go(char *command)
         stoptime = starttime + time + inc;
         
         // treat increment as seconds per move when time is almost up
-        if (time < 1500 && inc) stoptime = starttime + inc - 50;
+        if (time < 1500 && inc && depth == 64) stoptime = starttime + inc - 50;
     }
 
     // if depth is not available

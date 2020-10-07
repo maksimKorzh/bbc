@@ -6,9 +6,9 @@
 # YouTube tutorials
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/QUNP-UjujBM/0.jpg)](https://www.youtube.com/watch?v=QUNP-UjujBM&list=PLmN0neTso3Jxh8ZIylk74JpwfiWNI76Cs)
 
-# CCRL ELO rating
+# CCRL 1957 ELO rating
  - BBC 1.2 (is currently getting tested)
- - BBC 1.0 1957 ELO [https://www.computerchess.org.uk/ccrl/404/cgi/engine_details.cgi?print=Details&each_game=1&eng=BBC%201.0%2064-bit#BBC_1_0_64-bit]
+ - BBC 1.0 https://www.computerchess.org.uk/ccrl/404/cgi/engine_details.cgi?print=Details&each_game=1&eng=BBC%201.0%2064-bit#BBC_1_0_64-bit
 
 # Testing
 If your engine is stronger than 2500 ELO there's no much sense in playing matches<br>

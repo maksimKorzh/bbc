@@ -50,6 +50,7 @@ https://github.com/maksimKorzh/bbc/tree/master/pgn
    - Marcel Vanthoor for teaching me linear algebra and general inspirations
    - Ronald Friederich for providing PeSTO evaluation tables and sharing his ideas
    - Gabor Szots from CCRL for testing & rating BBC
+   - Chris Rea for testing and fixing bugs
   <br>
   And all the subscribers watching my videos and<br>
   motivating me to keep the development!<br>

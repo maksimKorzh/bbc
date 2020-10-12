@@ -6,6 +6,9 @@
 # Play BBC online
 http://maksimkorzh.pythonanywhere.com/
 
+# GUI
+https://github.com/maksimKorzh/uci-gui
+
 # YouTube tutorials
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/QUNP-UjujBM/0.jpg)](https://www.youtube.com/watch?v=QUNP-UjujBM&list=PLmN0neTso3Jxh8ZIylk74JpwfiWNI76Cs)
 
@@ -22,6 +25,7 @@ On the other hand testing versus engines of 2000 - 2300 ELO is welcomed!
 https://github.com/maksimKorzh/bbc/tree/master/pgn
 
 # Features
+ - own online GUI
  - bitboard board representation
  - pre-calculated attack tables
  - magic bitboards for sliding pieces

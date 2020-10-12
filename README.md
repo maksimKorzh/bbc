@@ -6,6 +6,9 @@
 # Play BBC online
 http://maksimkorzh.pythonanywhere.com/
 
+# Latest release
+https://github.com/maksimKorzh/bbc/releases/tag/1.2
+
 # GUI
 https://github.com/maksimKorzh/uci-gui
 

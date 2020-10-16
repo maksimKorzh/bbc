@@ -61,6 +61,7 @@ https://github.com/maksimKorzh/bbc/tree/master/pgn
    - Ronald Friederich for providing PeSTO evaluation tables and sharing his ideas
    - Gabor Szots from CCRL for testing & rating BBC
    - Chris Rea for testing and fixing bugs
+   - Brendan J. Norman for creating logo for BBC
   <br>
   And all the subscribers watching my videos and<br>
   motivating me to keep the development!<br>

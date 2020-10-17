@@ -1,5 +1,5 @@
-# BBC (current developmet state)
- - fixed show time taken for search bug (as pointed out by Chris Rea and implemented)
+# BBC 1.2
+ - added Stockfish NNUE
 
 # BBC 1.2
  - forfeit on time with 1sec increment bug fix

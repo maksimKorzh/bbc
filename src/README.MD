@@ -1,4 +1,4 @@
-# BBC 1.2
+# BBC 1.3
  - added Stockfish NNUE
 
 # BBC 1.2

@@ -69,17 +69,39 @@ int nnue_evaluate_pos(Position* pos);
 /**
 * Load NNUE file
 */
-DLLExport void _CDECL nnue_init(
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+void nnue_init(
   const char * evalFile             /** Path to NNUE file */
 );
+
+#ifdef __cplusplus
+}
+#endif
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
 * Evaluate on FEN string
 */
-DLLExport int _CDECL nnue_evaluate_fen(
+int nnue_evaluate_fen(
   const char* fen                   /** FEN string to probe evaluation for */
 );
 
+#ifdef __cplusplus
+}
+#endif
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 /**
 * Evaluation subroutine suitable for chess engines.
 * -------------------------------------------------
@@ -96,11 +118,13 @@ DLLExport int _CDECL nnue_evaluate_fen(
 *     ..
 *     piece[n+1] is set to 0 to represent end of array
 */
-DLLExport int _CDECL nnue_evaluate(
+int nnue_evaluate(
   int player,                       /** Side to move */
   int* pieces,                      /** Array of pieces */
   int* squares                      /** Corresponding array of squares the piece stand on */
 );
-
+#ifdef __cplusplus
+}
+#endif
 
 #endif

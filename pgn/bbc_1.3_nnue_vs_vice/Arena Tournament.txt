@@ -1,0 +1,12 @@
+   Engine             Score               BB
+1: BBC NNUE [youtube] 12,0/15 ............... 
+2: Vice               3,0/15  00000001010=0=0 
+
+15 of 20 games played
+Name of the tournament: Arena Tournament
+Site/ Country: maksim-Inspiron-3582, Ukraine
+Level: Blitz 2/1
+Operating system: Linux 4.15.0-20-generic x86_64
+PGN-File: /home/maksim/Tournaments/Arena Tournament.pgn
+Website: 
+E-Mail Address: 

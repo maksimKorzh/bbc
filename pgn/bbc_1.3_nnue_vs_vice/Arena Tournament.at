@@ -1,0 +1,77 @@
+[Settings]
+TournamentName=Arena Tournament
+Type=1
+CurrSwissRound=0
+Rounds=20
+CurrentPair=1
+CurrentRound=15
+Level=2 2\0/1#0
+
+[Options]
+QuitAfterTournament=0
+ShutDownAfterTournament=0
+RestartEngines=0
+RepeatStartPosition=1
+Startposition=0
+Variant=0
+StartPGNEPD=
+Resign=0
+ResignValue=-900
+MaxGameLength=250
+EarlyDrawFromMove=9999
+TablebaseDraw=0
+Autoflag=1
+Ponder=0
+AutoRotateInGautlet=1
+RutschSystem=1
+RestartArenaAfterGamesValue=20
+RestartArenaAtHour1=0
+RestartArenaAtHourValue=2
+ShutdownComputerAfterGames1=0
+ShutdownComputerAfterGamesValue=0
+
+[Save]
+SaveGamesPGN=1
+SaveIncompleteGamesPGN=1
+PGNFile=/home/maksim/Tournaments/Arena Tournament.pgn
+Protocolfile=/home/maksim/Tournaments/Arena Tournament.log
+TurTabTextfile=/home/maksim/Tournaments/Arena Tournament.txt
+TurTabHTMLfile=/home/maksim/Tournaments/Arena Tournament.html
+SaveTurTabText=1
+SaveTurTabHTML=1
+HTMLuseCountry=0
+HTMLuseFlags=0
+HTMLuseEnglish=0
+HTMLshortResults=0
+HTMLonlyPoints=0
+HTMLFlagsFromWebsite=0
+HTMLshowPGNfilename=1
+HTMLshowBenchmark=0
+PGNwebsite=
+HTMLWinPercent=0
+HTMLStartELO=0
+HTMLShowConditions=0
+HTMLConditions=
+HTMLTopLineColorized=0
+HTMLTableTopLineColor=6737151
+
+[Data]
+LastPGNEPDindex=1
+Country=Ukraine
+Site=maksim-Inspiron-3582
+Hardware=Intel(R) Celeron(R) N4000 CPU @ 1.10GHz 2248.570 MHz with 3â752 MB Memory
+OS=Linux 4.15.0-20-generic x86_64
+Website=
+E-Mail=
+ArenaVersion=Arena 3.9beta
+LastGameDate=2020.10.18
+LastGameTime=02:10:29
+FirstGameDate=2020.10.18
+FirstGameTime=00:36:40
+
+[PairingResults]
+BBC NNUE [youtube] ------ Vice=11111110101d1d1
+
+[Participants]
+Engine1=BBC NNUE [youtube]
+Engine2=Vice

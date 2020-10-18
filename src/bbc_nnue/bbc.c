@@ -44,7 +44,7 @@
 #include "nnue_eval.h"
 
 // define version
-#define version "1.2"
+#define version "1.3"
 
 // define bitboard data type
 #define U64 unsigned long long

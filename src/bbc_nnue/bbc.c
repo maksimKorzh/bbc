@@ -28,58 +28,6 @@
  ==================================
 \**********************************/
 
-/**********************************\
- ==================================
-  
-   THIS PROGRAM IS FREE SOFTWARE.
-   IT COMES WITHOUT ANY WARRANTY,
-    TO THE EXTENT PERMITTED BY
-          APPLICABLE LAW.
-         
-   YOU CAN REDISTRIBUTE IT AND/OR
-    MODIFY IT UNDER THE TERMS OF
-  THE DO WHAT THE FUCK YOU WANT TO
-      PUBLIC LICENCE VERSION 2
-     AS PUBLISHED BY SAM HOCEVAR
-      SEE http://www.wtfpl.net/
-          FOR MORE DETAILS
-          
-  --------------------------------
-    Copyright © 2020 Maksim Korzh
-   <freesoft.for.people@gmail.com>
-   
- ==================================
-\**********************************/
-
-/**********************************\
- ==================================
-  
-     DO WHAT THE FUCK YOU WANT
-        TO PUBLIC LICENSE
-  --------------------------------
-     Version 2, December 2004
-  --------------------------------
-    Everyone is permitted to copy
-      and distribute verbatim or
-   modified copies of this license
-    document, and changing it is
-         allowed as long as
-        the name is changed
-  --------------------------------
-      DO WHAT THE FUCK YOU WANT
-         TO PUBLIC LICENSE
-  TERMS AND CONDITIONS FOR COPYING,
-    DISTRIBUTION AND MODIFICATION
-  
-   0. You just DO WHAT THE FUCK
-                 YOU WANT TO.
-  --------------------------------
-   Copyright (C) 2004 Sam Hocevar
-        <sam@hocevar.net>
-   
- ==================================
-\**********************************/
-
 
 // system headers
 #include <stdio.h>

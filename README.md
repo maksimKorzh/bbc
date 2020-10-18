@@ -1,6 +1,6 @@
 # BBC (Bit Board Chess) + Stockfish NNUE!
  - UCI chess engine by Code Monkey King<br>
- - written for didactic purposes and<br>
+ - written for didactic purposes<br>
  - covered in 91 YouTube video series
 
 # Play BBC online

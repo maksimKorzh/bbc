@@ -1,13 +1,13 @@
-# BBC (Bit Board Chess)
+# BBC + Stockfish NNUE! (Bit Board Chess)
  - UCI chess engine by Code Monkey King<br>
  - written for didactic purposes and<br>
- - covered in 82 YouTube video series
+ - covered in 91 YouTube video series
 
 # Play BBC online
 http://maksimkorzh.pythonanywhere.com/
 
 # Latest release
-https://github.com/maksimKorzh/bbc/releases/tag/1.2
+https://github.com/maksimKorzh/bbc/releases/tag/1.3
 
 # GUI
 https://github.com/maksimKorzh/uci-gui
@@ -46,6 +46,7 @@ https://github.com/maksimKorzh/bbc/tree/master/pgn
  - Material/PST (Positional Square Tables) evaluation
  - basic pawn structure/mobility/king safety evaluation
  - Tapered evaluation
+ - Stockfish NNUE
  - UCI protocol
 
 # Credits

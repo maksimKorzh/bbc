@@ -3591,7 +3591,13 @@ void search_position(int depth)
 
     // print best move
     printf("bestmove ");
-    print_move(pv_table[0][0]);
+    
+    if (pv_table[0][0])
+        print_move(pv_table[0][0]);
+    
+    else
+        printf("(none)");
+    
     printf("\n");
 }
 

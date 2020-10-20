@@ -3879,6 +3879,9 @@ void parse_go(char *command)
 // main UCI loop
 void uci_loop()
 {
+    // just make it big enough
+    #define INPUT_BUFFER 10000
+    
     // max hash MB
     int max_hash = 128;
     
@@ -3890,7 +3893,7 @@ void uci_loop()
     setbuf(stdout, NULL);
     
     // define user / GUI input buffer
-    char input[2000];
+    char input[INPUT_BUFFER];
     
     // print engine info
     printf("id name BBC %s\n", version);
@@ -3908,7 +3911,7 @@ void uci_loop()
         fflush(stdout);
         
         // get user / GUI input
-        if (!fgets(input, 2000, stdin))
+        if (!fgets(input, INPUT_BUFFER, stdin))
             // continue the loop
             continue;
         
@@ -4013,76 +4016,6 @@ void init_all()
  
  ==================================
 \**********************************/
-
-// init NNUE input
-static inline void nnue_input(int *pieces, int *squares)
-{
-    U64 bitboard;
-    int piece, square;
-    int index = 2;
-
-    // loop over piece bitboards
-    for (int bb_piece = P; bb_piece <= k; bb_piece++)
-    {
-        // init piece bitboard copy
-        bitboard = bitboards[bb_piece];
-        
-        // loop over pieces within a bitboard
-        while (bitboard)
-        {
-            // init piece
-            piece = bb_piece;
-            
-            // init square
-            square = get_ls1b_index(bitboard);
-            
-            //printf("piece: %c  piece code: %d  square index: %d  square: %s\n", ascii_pieces[piece], piece, square, square_to_coordinates[square]);
-            
-            if (piece == K)
-            {
-                /* convert white king piece code to stockfish piece code and
-                   store it at the first index of pieces array
-                */ 
-                pieces[0] = nnue_pieces[piece];
-                
-                /* convert white king square index to stockfish square index and
-                   store it at the first index of pieces array
-                */
-                squares[0] = nnue_squares[square];
-            }
-            
-            else if (piece == k)
-            {
-                /* convert black king piece code to stockfish piece code and
-                   store it at the second index of pieces array
-                */
-                pieces[1] = nnue_pieces[piece];
-                
-                /* convert black king square index to stockfish square index and
-                   store it at the second index of pieces array
-                */
-                squares[1] = nnue_squares[square];
-            }
-            
-            else
-            {
-                /*  convert all the rest of piece code with corresponding square codes
-                    to stockfish piece codes and square indices respectively
-                */
-                pieces[index] = nnue_pieces[piece];
-                squares[index] = nnue_squares[square];
-                index++;    
-            }
-            
-            // pop LS1B
-            pop_bit(bitboard, square);
-        }
-    }
-    
-    // end arrays with sero terminating character
-    pieces[index] = 0;
-    squares[index] = 0;
-}
 
 int main()
 {

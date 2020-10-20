@@ -1,5 +1,7 @@
 # BBC 1.3
  - added Stockfish NNUE
+ - removed handcrafted evaluation completely
+ - fixed nasty timing releated bugs
 
 # BBC 1.2
  - forfeit on time with 1sec increment bug fix

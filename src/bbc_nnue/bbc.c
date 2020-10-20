@@ -3207,7 +3207,7 @@ static inline int quiescence(int alpha, int beta)
         take_back();
         
         // reutrn 0 if time is up
-        if(stopped == 1) return 0;
+        if (stopped == 1) return 0;
         
         // found a better move
         if (score > alpha)
@@ -3330,7 +3330,7 @@ static inline int negamax(int alpha, int beta, int depth)
         take_back();
 
         // reutrn 0 if time is up
-        if(stopped == 1) return 0;
+        if (stopped == 1) return 0;
 
         // fail-hard beta cutoff
         if (score >= beta)
@@ -3437,7 +3437,8 @@ static inline int negamax(int alpha, int beta, int depth)
         take_back();
         
         // reutrn 0 if time is up
-        if(stopped == 1) return 0;
+        if (stopped == 1)
+            return 0;
         
         // increment the counter of moves searched so far
         moves_searched++;
@@ -3542,7 +3543,7 @@ void search_position(int depth)
     for (int current_depth = 1; current_depth <= depth; current_depth++)
     {
         // if time is up
-        if(stopped == 1)
+        if (stopped == 1)
 			// stop calculating and return best move so far 
 			break;
 		
@@ -3596,6 +3597,7 @@ void search_position(int depth)
         print_move(pv_table[0][0]);
     
     else
+        // shouldn't get here
         printf("(none)");
     
     printf("\n");
@@ -3841,14 +3843,24 @@ void parse_go(char *command)
         // set up timing
         time /= movestogo;
         
-        // disable time buffer when time is almost up
-        if (time > 1500) time -= 50;
+        // lag compensation
+        time -= 50;
+        
+        // if time is up
+        if (time < 0)
+        {
+            // restore negative time to 0
+            time = 0;
+            
+            // inc lag compensation on 0+inc time controls
+            inc -= 50;
+            
+            // timing for 0 seconds left and no inc
+            if (inc < 0) inc = 1;
+        }
         
         // init stoptime
-        stoptime = starttime + time + inc;
-        
-        // treat increment as seconds per move when time is almost up
-        if (time < 1500 && inc && depth == 64) stoptime = starttime + inc - 50;
+        stoptime = starttime + time + inc;        
     }
 
     // if depth is not available
@@ -3857,8 +3869,8 @@ void parse_go(char *command)
         depth = 64;
 
     // print debug info
-    printf("time: %d  start: %u  stop: %u  depth: %d  timeset:%d\n",
-            time, starttime, stoptime, depth, timeset);
+    printf("time: %d  inc: %d  start: %u  stop: %u  depth: %d  timeset:%d\n",
+            time, inc, starttime, stoptime, depth, timeset);
 
     // search position
     search_position(depth);

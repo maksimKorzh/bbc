@@ -276,6 +276,9 @@ int repetition_index;
 // half move counter
 int ply;
 
+// fifty move rule counter
+int fifty;
+
 
 /**********************************\
  ==================================
@@ -747,7 +750,10 @@ void print_board()
                                            (castle & bq) ? 'q' : '-');
     
     // print hash key
-    printf("     Hash key:  %llx\n\n", hash_key);
+    printf("     Hash key:  %llx\n", hash_key);
+    
+    // fifty move rule counter
+    printf("     Fifty move: %d\n\n", fifty);
 }
 
 // reset board variables
@@ -766,6 +772,9 @@ void reset_board()
     
     // reset repetition index
     repetition_index = 0;
+    
+    // reset fifty move rule counter
+    fifty = 0;
     
     // reset repetition table
     memset(repetition_table, 0ULL, sizeof(repetition_table));
@@ -1773,10 +1782,11 @@ void print_move_list(moves *move_list)
 // preserve board state
 #define copy_board()                                                      \
     U64 bitboards_copy[12], occupancies_copy[3];                          \
-    int side_copy, enpassant_copy, castle_copy;                           \
+    int side_copy, enpassant_copy, castle_copy, fifty_copy;               \
     memcpy(bitboards_copy, bitboards, 96);                                \
     memcpy(occupancies_copy, occupancies, 24);                            \
     side_copy = side, enpassant_copy = enpassant, castle_copy = castle;   \
+    fifty_copy = fifty;                                                   \
     U64 hash_key_copy = hash_key;                                         \
 
 // restore board state
@@ -1784,6 +1794,7 @@ void print_move_list(moves *move_list)
     memcpy(bitboards, bitboards_copy, 96);                                \
     memcpy(occupancies, occupancies_copy, 24);                            \
     side = side_copy, enpassant = enpassant_copy, castle = castle_copy;   \
+    fifty = fifty_copy;                                                   \
     hash_key = hash_key_copy;                                             \
 
 // move types
@@ -1844,9 +1855,20 @@ static inline int make_move(int move, int move_flag)
         hash_key ^= piece_keys[piece][source_square]; // remove piece from source square in hash key
         hash_key ^= piece_keys[piece][target_square]; // set piece to the target square in hash key
         
+        // increment fifty move rule counter
+        fifty++;
+        
+        // if pawn moved
+        if (piece == P || piece == p)
+            // reset fifty move rule counter
+            fifty = 0;
+        
         // handling capture moves
         if (capture)
         {
+            // reset fifty move rule counter
+            fifty = 0;
+            
             // pick up bitboard piece index ranges depending on side
             int start_piece, end_piece;
             
@@ -2718,8 +2740,15 @@ static inline int evaluate()
     pieces[index] = 0;
     squares[index] = 0;
     
+    /*
+        We need to make sure that fifty rule move counter gives a penalty
+        to the evaluation, otherwise it won't be capable of mating in
+        simple endgames like KQK or KRK! This expression is used:
+                        nnue_score * (100 - fifty) / 100
+    */
+    
     // get NNUE score (final score! No need to adjust by the side!)
-    return evaluate_nnue(side, pieces, squares);
+    return evaluate_nnue(side, pieces, squares) * (100 - fifty) / 100;    
 }
 
 
@@ -3247,7 +3276,7 @@ static inline int negamax(int alpha, int beta, int depth)
     int hash_flag = hash_flag_alpha;
     
     // if position repetition occurs
-    if (ply && is_repetition())
+    if (ply && is_repetition() || fifty >= 100)
         // return draw score
         return 0;
     

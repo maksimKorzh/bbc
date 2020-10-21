@@ -43,10 +43,7 @@ https://github.com/maksimKorzh/bbc/tree/master/pgn
  - LMR (Late Move Reduction)
  - NMP (Null Move Pruning)
  - Transposition table (up to 128MB)
- - Material/PST (Positional Square Tables) evaluation
- - basic pawn structure/mobility/king safety evaluation
- - Tapered evaluation
- - Stockfish NNUE
+ - PURE Stockfish NNUE evaluation + 50 move rule penalty
  - UCI protocol
 
 # Credits
@@ -65,6 +62,7 @@ https://github.com/maksimKorzh/bbc/tree/master/pgn
    - Gabor Szots from CCRL for testing & rating BBC
    - Chris Rea for testing and fixing bugs
    - Brendan J. Norman for creating logo for BBC
+   - Daniel Shawul for providing NNUE probe library
   <br>
   And all the subscribers watching my videos and<br>
   motivating me to keep the development!<br>

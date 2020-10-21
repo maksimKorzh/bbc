@@ -2,6 +2,7 @@
  - added Stockfish NNUE
  - removed handcrafted evaluation completely
  - fixed nasty timing releated bugs
+ - finally added 50 move rule to avoid NNUE eval draw winning endgames
 
 # BBC 1.2
  - forfeit on time with 1sec increment bug fix

@@ -1,0 +1,12 @@
+   Engine                      Score          BB
+1: BBC_1.3_sf_nnue_64bit_linux 9,5/10 .......... 
+2: Vice 1.0                    0,5/10 0000000=00 
+
+10 games played / Tournament is finished
+Name of the tournament: Arena Tournament1
+Site/ Country: maksim-Inspiron-3582, Ukraine
+Level: Blitz 2/1
+Operating system: Linux 4.15.0-20-generic x86_64
+PGN-File: /home/maksim/Tournaments/Arena Tournament1.pgn
+Website: 
+E-Mail Address: 

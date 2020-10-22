@@ -2867,6 +2867,7 @@ typedef struct {
     int depth;      // current search depth
     int flag;       // flag the type of node (fail-low/fail-high/PV) 
     int score;      // score (alpha/beta/PV)
+    int best_move;
 } tt;               // transposition table (TT aka hash table)
 
 // define TT instance
@@ -2932,7 +2933,7 @@ void init_hash_table(int mb)
 }
 
 // read hash entry data
-static inline int read_hash_entry(int alpha, int beta, int depth)
+static inline int read_hash_entry(int alpha, int beta, int* best_move, int depth)
 {
     // create a TT instance pointer to particular hash entry storing
     // the scoring data for the current board position if available
@@ -2969,6 +2970,9 @@ static inline int read_hash_entry(int alpha, int beta, int depth)
                 // return beta (fail-high node) score
                 return beta;
         }
+        
+        // store best move
+        *best_move = hash_entry->best_move;
     }
     
     // if hash entry doesn't exist
@@ -2976,7 +2980,7 @@ static inline int read_hash_entry(int alpha, int beta, int depth)
 }
 
 // write hash entry data
-static inline void write_hash_entry(int score, int depth, int hash_flag)
+static inline void write_hash_entry(int score, int best_move, int depth, int hash_flag)
 {
     // create a TT instance pointer to particular hash entry storing
     // the scoring data for the current board position if available
@@ -2992,6 +2996,7 @@ static inline void write_hash_entry(int score, int depth, int hash_flag)
     hash_entry->score = score;
     hash_entry->flag = hash_flag;
     hash_entry->depth = depth;
+    hash_entry->best_move = best_move;
 }
 
 // enable PV move scoring
@@ -3093,15 +3098,23 @@ static inline int score_move(int move)
 }
 
 // sort moves in descending order
-static inline int sort_moves(moves *move_list)
+static inline int sort_moves(moves *move_list, int best_move)
 {
     // move scores
     int move_scores[move_list->count];
     
     // score all the moves within a move list
     for (int count = 0; count < move_list->count; count++)
-        // score move
-        move_scores[count] = score_move(move_list->moves[count]);
+    {
+        // if hash move available
+        if (best_move == move_list->moves[count])
+            // score move
+            move_scores[count] = 30000;
+
+        else
+            // score move
+            move_scores[count] = score_move(move_list->moves[count]);
+    }
     
     // loop over current move within a move list
     for (int current_move = 0; current_move < move_list->count; current_move++)
@@ -3194,7 +3207,7 @@ static inline int quiescence(int alpha, int beta)
     generate_moves(move_list);
     
     // sort moves
-    sort_moves(move_list);
+    sort_moves(move_list, 0);
     
     // loop over moves within a movelist
     for (int count = 0; count < move_list->count; count++)
@@ -3272,6 +3285,9 @@ static inline int negamax(int alpha, int beta, int depth)
     // variable to store current move's score (from the static evaluation perspective)
     int score;
     
+    // best move (to store in TT)
+    int best_move = 0;
+    
     // define hash flag
     int hash_flag = hash_flag_alpha;
     
@@ -3285,7 +3301,7 @@ static inline int negamax(int alpha, int beta, int depth)
     
     // read hash entry if we're not in a root ply and hash entry is available
     // and current node is not a PV node
-    if (ply && (score = read_hash_entry(alpha, beta, depth)) != no_hash_entry && pv_node == 0)
+    if (ply && (score = read_hash_entry(alpha, beta, &best_move, depth)) != no_hash_entry && pv_node == 0)
         // if the move has already been searched (hence has a value)
         // we just return the score for this move without searching it
         return score;
@@ -3331,7 +3347,6 @@ static inline int negamax(int alpha, int beta, int depth)
         // increment repetition index & store hash key
         repetition_index++;
         repetition_table[repetition_index] = hash_key;
-
         
         // hash enpassant if available
         if (enpassant != no_sq) hash_key ^= enpassant_keys[enpassant];
@@ -3379,7 +3394,7 @@ static inline int negamax(int alpha, int beta, int depth)
         enable_pv_scoring(move_list);
     
     // sort moves
-    sort_moves(move_list);
+    sort_moves(move_list, best_move);
     
     // number of moves searched in a move list
     int moves_searched = 0;
@@ -3478,6 +3493,9 @@ static inline int negamax(int alpha, int beta, int depth)
             // switch hash flag from storing score for fail-low node
             // to the one storing score for PV node
             hash_flag = hash_flag_exact;
+            
+            // store best move (for TT)
+            best_move = move_list->moves[count];
         
             // on quiet moves
             if (get_move_capture(move_list->moves[count]) == 0)
@@ -3502,7 +3520,7 @@ static inline int negamax(int alpha, int beta, int depth)
             if (score >= beta)
             {
                 // store hash entry with the score equal to beta
-                write_hash_entry(beta, depth, hash_flag_beta);
+                write_hash_entry(beta, best_move, depth, hash_flag_beta);
             
                 // on quiet moves
                 if (get_move_capture(move_list->moves[count]) == 0)
@@ -3533,7 +3551,7 @@ static inline int negamax(int alpha, int beta, int depth)
     }
     
     // store hash entry with the score equal to alpha
-    write_hash_entry(alpha, depth, hash_flag);
+    write_hash_entry(alpha, best_move, depth, hash_flag);
     
     // node (position) fails low
     return alpha;

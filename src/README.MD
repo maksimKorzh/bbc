@@ -1,3 +1,8 @@
+# BBC 1.4
+ - added hash move ordering
+ - razoring
+ - evaluation pruning
+
 # BBC 1.3
  - added Stockfish NNUE
  - removed handcrafted evaluation completely

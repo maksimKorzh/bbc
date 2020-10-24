@@ -4135,34 +4135,6 @@ void init_all()
  ==================================
 \**********************************/
 
-// static exchange evaluation
-/*int see(int square, int side)
-{
-   int value = 0;
-   int piece = get_smallest_attacker(square, side);
-   // skip if the square isn't attacked anymore by this side
-   if ( piece )
-   {
-      make_capture(piece, square);
-      // do not consider captures if they lose material, therefor max zero
-      value = max (0, piece_just_captured() -see(square, other(side)) );
-      undo_capture(piece, square);
-   }
-   return value;
-}*/
-
-// static exchange evaluation of a capture
-/*int see_capture(int from, int to, int side)
-{
-   value = 0;
-   piece = board[from];
-
-   make_capture(piece, to);
-   value = piece_just_captured() - see(to, other(side));
-   undo_capture(piece, to);
-   return value;
-}*/
-
 int main()
 {
     // init all

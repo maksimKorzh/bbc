@@ -3052,6 +3052,9 @@ static inline int score_move(int move)
     // score capture move
     if (get_move_capture(move))
     {
+        // init source piece
+        int piece = get_move_piece(move);
+        
         // init target piece
         int target_piece = P;
         
@@ -3073,9 +3076,28 @@ static inline int score_move(int move)
                 break;
             }
         }
+        
+	    /* extract move features
+	    int source_square = get_move_source(move);
+	    int target_square = get_move_target(move);	
+
+	    // make the first capture, so that X-ray defender show up
+	    pop_bit(bitboards[piece], source_square);
+
+	    // captures of undefended pieces are good by definition
+	    if (!is_square_attacked(target_square, side ^ 1)) {
+		    // restore captured piece
+		    set_bit(bitboards[piece], source_square);
+		    
+		    // score undefended captures greater than other captures
+		    return 15000;
+	    }
+	    
+	    // restore captured piece
+	    set_bit(bitboards[piece], source_square);*/
                 
         // score move by MVV LVA lookup [source piece][target piece]
-        return mvv_lva[get_move_piece(move)][target_piece] + 10000;
+        return mvv_lva[piece][target_piece] + 10000;
     }
     
     // score quiet move
@@ -4118,6 +4140,34 @@ void init_all()
  ==================================
 \**********************************/
 
+// static exchange evaluation
+/*int see(int square, int side)
+{
+   int value = 0;
+   int piece = get_smallest_attacker(square, side);
+   // skip if the square isn't attacked anymore by this side
+   if ( piece )
+   {
+      make_capture(piece, square);
+      // do not consider captures if they lose material, therefor max zero
+      value = max (0, piece_just_captured() -see(square, other(side)) );
+      undo_capture(piece, square);
+   }
+   return value;
+}*/
+
+// static exchange evaluation of a capture
+/*int see_capture(int from, int to, int side)
+{
+   value = 0;
+   piece = board[from];
+
+   make_capture(piece, to);
+   value = piece_just_captured() - see(to, other(side));
+   undo_capture(piece, to);
+   return value;
+}*/
+
 int main()
 {
     // init all
@@ -4125,7 +4175,7 @@ int main()
     
     // connect to GUI
     uci_loop();
-    
+
     // free hash table memory on exit
     free(hash_table);
 

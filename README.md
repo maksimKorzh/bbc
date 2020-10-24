@@ -17,7 +17,7 @@ https://github.com/maksimKorzh/uci-gui
 
 # Latest CCRL rating is 2096 ELO rating
  - BBC 1.3 + SF NNUE (is currently getting tested)
- - BBC 1.2 not tested
+ - BBC 1.2 1993 ELO https://www.computerchess.org.uk/ccrl/404/cgi/engine_details.cgi?match_length=30&each_game=1&print=Details&each_game=1&eng=BBC%201.2%2064-bit#BBC_1_2_64-bit
  - BBC 1.1 2096 ELO https://www.computerchess.org.uk/ccrl/404/cgi/engine_details.cgi?print=Details&each_game=1&eng=BBC%201.1%2064-bit#BBC_1_1_64-bit
  - BBC 1.0 1957 ELO https://www.computerchess.org.uk/ccrl/404/cgi/engine_details.cgi?print=Details&each_game=1&eng=BBC%201.0%2064-bit#BBC_1_0_64-bit
 
@@ -59,7 +59,7 @@ https://github.com/maksimKorzh/bbc/tree/master/pgn
    - Jay Warendorff for testing development versions of BBC<br>
    - Marcel Vanthoor for teaching me linear algebra and general inspirations
    - Ronald Friederich for providing PeSTO evaluation tables and sharing his ideas
-   - Gabor Szots from CCRL for testing & rating BBC
+   - Gabor Szots and Silvian R. from CCRL for testing & rating BBC
    - Chris Rea for testing and fixing bugs
    - Brendan J. Norman for creating logo for BBC
    - Daniel Shawul for providing NNUE probe library

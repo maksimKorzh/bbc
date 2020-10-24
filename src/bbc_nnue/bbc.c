@@ -2926,7 +2926,7 @@ void init_hash_table(int mb)
         // clear hash table
         clear_hash_table();
         
-        printf("    Hash table is initialied with %d entries\n", hash_entries);
+        printf("Hash table is initialied with %d entries\n", hash_entries);
     }
     
     
@@ -4017,13 +4017,7 @@ void uci_loop()
     
     // define user / GUI input buffer
     char input[INPUT_BUFFER];
-    
-    // print engine info
-    printf("id name BBC %s\n", version);
-    printf("id author Code Monkey King\n");
-    printf("option name Hash type spin default 64 min 4 max %d\n", max_hash);
-    printf("uciok\n");
-    
+
     // main loop
     while (1)
     {
@@ -4084,6 +4078,7 @@ void uci_loop()
             // print engine info
             printf("id name BBC %s\n", version);
             printf("id author Code Monkey King\n");
+            printf("option name Hash type spin default 64 min 4 max %d\n", max_hash);
             printf("uciok\n");
         }
         

@@ -7,7 +7,7 @@
 [![IMAGE ALT TEXT HERE](https://github.com/maksimKorzh/uci-gui/blob/main/gui.png)](https://maksimkorzh.pythonanywhere.com)
 
 # Latest release
-[![IMAGE ALT TEXT HERE](https://github.com/maksimKorzh/uci-gui/blob/main/LOGO.png)](https://github.com/maksimKorzh/bbc/releases/tag/1.4)
+[![IMAGE ALT TEXT HERE](https://github.com/maksimKorzh/bbc/blob/master/LOGO.png)](https://github.com/maksimKorzh/bbc/releases/tag/1.4)
 
 # GUI
 https://github.com/maksimKorzh/uci-gui

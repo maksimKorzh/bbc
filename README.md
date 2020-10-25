@@ -12,7 +12,7 @@
 # YouTube tutorials
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/QUNP-UjujBM/0.jpg)](https://www.youtube.com/watch?v=QUNP-UjujBM&list=PLmN0neTso3Jxh8ZIylk74JpwfiWNI76Cs)
 
-# Latest CCRL rating is 2096 ELO rating
+# Latest <a href="https://www.computerchess.org.uk/ccrl/404/cgi/compare_engines.cgi?family=BBC&print=Rating+list&print=Results+table&print=LOS+table&print=Ponder+hit+table&print=Eval+difference+table&print=Comopp+gamenum+table&print=Overlap+table&print=Score+with+common+opponents">CCRL</a> rating is 2096 ELO rating
  - BBC 1.4 + SF NNUE FINAL VERSION (around 70 Elo stronger than previous)
  - BBC 1.3 + SF NNUE (2700+ Elo)
  - BBC 1.2 <a href="https://www.computerchess.org.uk/ccrl/404/cgi/engine_details.cgi?match_length=30&each_game=1&print=Details&each_game=1&eng=BBC%201.2%2064-bit#BBC_1_2_64-bit">1993 ELO</a> 
@@ -60,10 +60,10 @@
   motivating me to keep the development!<br>
 
 # Test matches
-<a href="https://github.com/maksimKorzh/bbc/tree/master/pgn" class="btn-link">Get PGN games</a>
+<a href="https://github.com/maksimKorzh/bbc/tree/master/pgn">Get PGN games</a>
 
 # Support the project
-<a href="https://www.patreon.com/code_monkey_king" class="btn-link">Become a Patron!</a>
+<a href="https://www.patreon.com/code_monkey_king">Become a Patron!</a>
   
   
   

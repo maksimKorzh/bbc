@@ -44,7 +44,7 @@
 #include "nnue_eval.h"
 
 // define version
-#define version "1.3 + SF NNUE"
+#define version " - FINAL VERSION (1.4 + SF NNUE)"
 
 // define bitboard data type
 #define U64 unsigned long long
@@ -2748,7 +2748,7 @@ static inline int evaluate()
     */
     
     // get NNUE score (final score! No need to adjust by the side!)
-    return evaluate_nnue(side, pieces, squares) * (100 - fifty) / 100;    
+    return (evaluate_nnue(side, pieces, squares) * (100 - fifty) / 100);
 }
 
 
@@ -3357,12 +3357,12 @@ static inline int negamax(int alpha, int beta, int depth)
     // legal moves counter
     int legal_moves = 0;
     
+    // get static evaluation score
+	int static_eval = evaluate();
+    
     // evaluation pruning / static null move pruning
 	if (depth < 3 && !pv_node && !in_check &&  abs(beta - 1) > -infinity + 100)
-	{
-		// get static evaluation score
-		int static_eval = evaluate(alpha, beta, 1);
-        
+	{   
         // define evaluation margin
 		int eval_margin = 120 * depth;
 		
@@ -3423,7 +3423,7 @@ static inline int negamax(int alpha, int beta, int depth)
     if (!pv_node && !in_check && depth <= 3)
     {
         // get static eval and add first bonus
-        score = evaluate() + 125;
+        score = static_eval + 125;
         
         // define new score
         int new_score;

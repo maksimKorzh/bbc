@@ -20,7 +20,7 @@
  - BBC 1.0 <a href="https://www.computerchess.org.uk/ccrl/404/cgi/engine_details.cgi?print=Details&each_game=1&eng=BBC%201.0%2064-bit#BBC_1_0_64-bit">1957 ELO </a>
 
 # Features
- - own online GUI https://github.com/maksimKorzh/uci-gui
+ - own online <a href="https://github.com/maksimKorzh/uci-gui">GUI</a>
  - bitboard board representation
  - pre-calculated attack tables
  - magic bitboards for sliding pieces

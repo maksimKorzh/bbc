@@ -59,9 +59,11 @@
   And all the subscribers watching my videos and<br>
   motivating me to keep the development!<br>
 
-# Test matches https://github.com/maksimKorzh/bbc/tree/master/pgn
-# Support the project https://www.patreon.com/code_monkey_king
-  
+# Test matches
+<a href="https://github.com/maksimKorzh/bbc/tree/master/pgn" class="btn btn-primary">Get PGN games</a>
+
+# Support the project
+<a href="https://www.patreon.com/code_monkey_king" class="btn btn-warning">Become a Patron!</a>
   
   
   

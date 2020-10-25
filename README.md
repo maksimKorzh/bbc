@@ -15,9 +15,9 @@
 # Latest CCRL rating is 2096 ELO rating
  - BBC 1.4 + SF NNUE FINAL VERSION (around 70 Elo stronger than previous)
  - BBC 1.3 + SF NNUE (2700+ Elo)
- - BBC 1.2 1993 ELO https://www.computerchess.org.uk/ccrl/404/cgi/engine_details.cgi?match_length=30&each_game=1&print=Details&each_game=1&eng=BBC%201.2%2064-bit#BBC_1_2_64-bit
- - BBC 1.1 2096 ELO https://www.computerchess.org.uk/ccrl/404/cgi/engine_details.cgi?print=Details&each_game=1&eng=BBC%201.1%2064-bit#BBC_1_1_64-bit
- - BBC 1.0 1957 ELO https://www.computerchess.org.uk/ccrl/404/cgi/engine_details.cgi?print=Details&each_game=1&eng=BBC%201.0%2064-bit#BBC_1_0_64-bit
+ - BBC 1.2 <a href="https://www.computerchess.org.uk/ccrl/404/cgi/engine_details.cgi?match_length=30&each_game=1&print=Details&each_game=1&eng=BBC%201.2%2064-bit#BBC_1_2_64-bit">1993 ELO</a> 
+ - BBC 1.1 <a href="https://www.computerchess.org.uk/ccrl/404/cgi/engine_details.cgi?print=Details&each_game=1&eng=BBC%201.1%2064-bit#BBC_1_1_64-bit">2096 ELO</a>
+ - BBC 1.0 <a href="https://www.computerchess.org.uk/ccrl/404/cgi/engine_details.cgi?print=Details&each_game=1&eng=BBC%201.0%2064-bit#BBC_1_0_64-bit">1957 ELO </a>
 
 # Features
  - own online GUI https://github.com/maksimKorzh/uci-gui
@@ -60,10 +60,10 @@
   motivating me to keep the development!<br>
 
 # Test matches
-<a href="https://github.com/maksimKorzh/bbc/tree/master/pgn" class="btn btn-primary">Get PGN games</a>
+<a href="https://github.com/maksimKorzh/bbc/tree/master/pgn" class="btn-link">Get PGN games</a>
 
 # Support the project
-<a href="https://www.patreon.com/code_monkey_king" class="btn btn-warning">Become a Patron!</a>
+<a href="https://www.patreon.com/code_monkey_king" class="btn-link">Become a Patron!</a>
   
   
   

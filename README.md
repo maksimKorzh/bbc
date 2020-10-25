@@ -6,7 +6,7 @@
 # Play BBC online
 [![IMAGE ALT TEXT HERE](https://github.com/maksimKorzh/uci-gui/blob/main/gui.png)](https://maksimkorzh.pythonanywhere.com)
 
-# Latest release
+# Final release
 [![IMAGE ALT TEXT HERE](https://github.com/maksimKorzh/bbc/blob/master/LOGO.png)](https://github.com/maksimKorzh/bbc/releases/tag/1.4)
 
 # YouTube tutorials
@@ -18,9 +18,6 @@
  - BBC 1.2 1993 ELO https://www.computerchess.org.uk/ccrl/404/cgi/engine_details.cgi?match_length=30&each_game=1&print=Details&each_game=1&eng=BBC%201.2%2064-bit#BBC_1_2_64-bit
  - BBC 1.1 2096 ELO https://www.computerchess.org.uk/ccrl/404/cgi/engine_details.cgi?print=Details&each_game=1&eng=BBC%201.1%2064-bit#BBC_1_1_64-bit
  - BBC 1.0 1957 ELO https://www.computerchess.org.uk/ccrl/404/cgi/engine_details.cgi?print=Details&each_game=1&eng=BBC%201.0%2064-bit#BBC_1_0_64-bit
-
-# Test matches
-https://github.com/maksimKorzh/bbc/tree/master/pgn
 
 # Features
  - own online GUI https://github.com/maksimKorzh/uci-gui
@@ -62,8 +59,8 @@ https://github.com/maksimKorzh/bbc/tree/master/pgn
   And all the subscribers watching my videos and<br>
   motivating me to keep the development!<br>
 
-# Support the project
-  https://www.patreon.com/code_monkey_king
+# Test matches https://github.com/maksimKorzh/bbc/tree/master/pgn
+# Support the project https://www.patreon.com/code_monkey_king
   
   
   

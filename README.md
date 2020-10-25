@@ -9,9 +9,6 @@
 # Latest release
 [![IMAGE ALT TEXT HERE](https://github.com/maksimKorzh/bbc/blob/master/LOGO.png)](https://github.com/maksimKorzh/bbc/releases/tag/1.4)
 
-# GUI
-https://github.com/maksimKorzh/uci-gui
-
 # YouTube tutorials
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/QUNP-UjujBM/0.jpg)](https://www.youtube.com/watch?v=QUNP-UjujBM&list=PLmN0neTso3Jxh8ZIylk74JpwfiWNI76Cs)
 
@@ -26,7 +23,7 @@ https://github.com/maksimKorzh/uci-gui
 https://github.com/maksimKorzh/bbc/tree/master/pgn
 
 # Features
- - own online GUI
+ - own online GUI https://github.com/maksimKorzh/uci-gui
  - bitboard board representation
  - pre-calculated attack tables
  - magic bitboards for sliding pieces

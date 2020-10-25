@@ -4,10 +4,10 @@
  - covered in 91 YouTube video series
 
 # Play BBC online
-http://maksimkorzh.pythonanywhere.com/
+[![IMAGE ALT TEXT HERE](https://github.com/maksimKorzh/uci-gui/blob/main/gui.png)](https://maksimkorzh.pythonanywhere.com)
 
 # Latest release
-https://github.com/maksimKorzh/bbc/releases/tag/1.3
+[![IMAGE ALT TEXT HERE](https://github.com/maksimKorzh/uci-gui/blob/main/LOGO.png)](https://github.com/maksimKorzh/bbc/releases/tag/1.4)
 
 # GUI
 https://github.com/maksimKorzh/uci-gui

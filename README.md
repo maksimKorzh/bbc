@@ -51,7 +51,8 @@
    - Jay Warendorff for testing development versions of BBC<br>
    - Marcel Vanthoor for teaching me linear algebra and general inspirations
    - Ronald Friederich for providing PeSTO evaluation tables and sharing his ideas
-   - Gabor Szots and Silvian R. from CCRL for testing & rating BBC
+   - Gabor Szots from CCRL for testing & rating BBC
+   - Silvian R. for running private tests
    - Chris Rea for testing and fixing bugs
    - Brendan J. Norman for creating logo for BBC
    - Daniel Shawul for providing NNUE probe library

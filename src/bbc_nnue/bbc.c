@@ -887,6 +887,8 @@ void parse_fen(char *fen)
     // no enpassant square
     else
         enpassant = no_sq;
+
+    // TODO: parse half move counter to init fifty move counter
     
     // loop over white pieces bitboards
     for (int piece = P; piece <= K; piece++)

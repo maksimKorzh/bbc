@@ -12,8 +12,8 @@
 # YouTube tutorials
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/QUNP-UjujBM/0.jpg)](https://www.youtube.com/watch?v=QUNP-UjujBM&list=PLmN0neTso3Jxh8ZIylk74JpwfiWNI76Cs)
 
-# Latest <a href="https://www.computerchess.org.uk/ccrl/404/cgi/compare_engines.cgi?family=BBC&print=Rating+list&print=Results+table&print=LOS+table&print=Ponder+hit+table&print=Eval+difference+table&print=Comopp+gamenum+table&print=Overlap+table&print=Score+with+common+opponents">CCRL rating</a> is 2096 ELO rating
- - BBC 1.4 + SF NNUE FINAL VERSION (around 70 Elo stronger than previous)
+# Final version CCRL rating is<a href="https://www.computerchess.org.uk/ccrl/404/cgi/engine_details.cgi?match_length=30&each_game=1&print=Details&each_game=1&eng=BBC%201.4%20Stockfish%20NNUE%2064-bit#BBC_1_4_Stockfish_NNUE_64-bit">2937 ELO</a>
+ - BBC 1.4 + SF NNUE FINAL VERSION <a href="https://www.computerchess.org.uk/ccrl/404/cgi/engine_details.cgi?match_length=30&each_game=1&print=Details&each_game=1&eng=BBC%201.4%20Stockfish%20NNUE%2064-bit#BBC_1_4_Stockfish_NNUE_64-bit">2937 Elo</a>
  - BBC 1.3 + SF NNUE (<a href="http://talkchess.com/forum3/viewtopic.php?f=6&t=75536">2700+ Elo</a>)
  - BBC 1.2 <a href="https://www.computerchess.org.uk/ccrl/404/cgi/engine_details.cgi?match_length=30&each_game=1&print=Details&each_game=1&eng=BBC%201.2%2064-bit#BBC_1_2_64-bit">1993 ELO</a> 
  - BBC 1.1 <a href="https://www.computerchess.org.uk/ccrl/404/cgi/engine_details.cgi?print=Details&each_game=1&eng=BBC%201.1%2064-bit#BBC_1_1_64-bit">2096 ELO</a>

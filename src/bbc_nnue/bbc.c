@@ -870,7 +870,7 @@ void parse_fen(char *fen)
         fen++;
     }
     
-    // got to parsing enpassant square (increment pointer to FEN string)
+    // go to parsing enpassant square (increment pointer to FEN string)
     fen++;
     
     // parse enpassant square
@@ -888,7 +888,11 @@ void parse_fen(char *fen)
     else
         enpassant = no_sq;
 
-    // TODO: parse half move counter to init fifty move counter
+    // go to parsing half move counter (increment pointer to FEN string)
+    fen++;
+
+    // parse half move counter to init fifty move counter
+    fifty = atoi(fen);
     
     // loop over white pieces bitboards
     for (int piece = P; piece <= K; piece++)

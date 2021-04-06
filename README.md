@@ -3,6 +3,9 @@
  - written for didactic purposes<br>
  - covered in 95 YouTube video series
 
+# Project sponsors
+ - Eduardo Cáceres
+
 # Play BBC online
 [![IMAGE ALT TEXT HERE](https://github.com/maksimKorzh/uci-gui/blob/main/gui.png)](https://maksimkorzh.pythonanywhere.com)
 

@@ -2589,6 +2589,9 @@ static inline void perft_driver(int depth)
 // perft test
 void perft_test(int depth)
 {
+    // reset nodes count
+    nodes = 0ULL;
+    
     printf("\n     Performance test\n\n");
     
     // create move list instance
@@ -3879,7 +3882,7 @@ void parse_position(char *command)
     }
     
     // print board
-    print_board();
+    //print_board();
 }
 
 // reset time control variables
@@ -3946,6 +3949,17 @@ void parse_go(char *command)
     if ((argument = strstr(command,"depth")))
         // parse search depth
         depth = atoi(argument + 6);
+    
+    // run perft at given depth
+    if ((argument = strstr(command,"perft"))) {
+        // parse search depth
+        depth = atoi(argument + 6);
+        
+        // run perft
+        perft_test(depth);
+        
+        return;
+    }
 
     // if move time is not available
     if(movetime != -1)
@@ -4008,6 +4022,11 @@ void parse_go(char *command)
 // main UCI loop
 void uci_loop()
 {
+    // print user defined options
+    printf("\nExtended commands for debugging:\n");
+    printf("'d' - print current board position\n");
+    printf("'go perft 5' will run perft test for current position at the depth of 5\n\n");
+    
     // just make it big enough
     #define INPUT_BUFFER 10000
     
@@ -4100,6 +4119,9 @@ void uci_loop()
             printf("    Set hash table size to %dMB\n", mb);
             init_hash_table(mb);
         }
+        
+        // print board for debugging puposes
+        else if (!strncmp(input, "d", 1)) print_board();
     }
 }
 

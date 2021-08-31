@@ -3,7 +3,7 @@
  - written for didactic purposes<br>
  - covered in 95 YouTube video series
 
-# Subscriber's projects based on BBC
+# Subscribers' projects based on BBC
 KhepriChess by Kurt1288: https://github.com/kurt1288/KhepriChess (TypeScript)<br>
 KittyEngine by UnboxTheCat: https://github.com/evanhyd/KittyEngineV4 (C++)
 

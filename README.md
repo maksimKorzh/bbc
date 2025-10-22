@@ -5,7 +5,10 @@
 
 # Subscribers' projects based on BBC
 KhepriChess by Kurt1288: https://github.com/kurt1288/KhepriChess (TypeScript)<br>
-KittyEngine by UnboxTheCat: https://github.com/evanhyd/KittyEngineV4 (C++)
+KittyEngine by UnboxTheCat: https://github.com/evanhyd/KittyEngineV4 (C++)<br>
+Soomi by Otto Laukkanen:
+https://github.com/Koma1867/Soomi-V1-Chess-engine-in-golang
+(Golang)
 
 # Project sponsors
  - Eduardo Cáceres

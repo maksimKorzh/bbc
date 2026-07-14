@@ -9,7 +9,8 @@ KittyEngine by UnboxTheCat: https://github.com/evanhyd/KittyEngineV4 (C++)<br>
 Soomi by Otto Laukkanen:
 https://github.com/Koma1867/Soomi-V1-Chess-engine-in-golang
 (Golang)<br>
-Chal by Naman Thanki: https://github.com/namanthanki/chal
+Chal by Naman Thanki: https://github.com/namanthanki/chal<br>
+Maharajah by Oleksandr Velykotskyi: https://maharajah.one/
 
 # Project sponsors
  - Eduardo Cáceres
